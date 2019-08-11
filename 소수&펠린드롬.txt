@@ -1,0 +1,57 @@
+#include<stdlib.h>
+#include<iostream>
+#include<string>
+using namespace std;
+
+
+bool func2(int n) {
+	string input;
+	char arr1[100], arr2[100];
+	input = to_string(n);
+		int pivot = input.length() / 2;
+		for (int i = 0; i < pivot; i++) {
+			int comp_at = (input.length() - 1 )- i;
+			arr1[i]= input.at(i);
+			arr2[i] = input.at(comp_at);
+		}
+		for (int i = 0; i < pivot; i++) {
+			if (arr1[i] != arr2[i]) return false;
+		}
+		return true;
+}
+int main() {
+	int n;
+	cin >> n;
+
+	//에라토스테네스의 체
+	bool * erra = (bool*)malloc(sizeof(bool) * 2000000) ;
+	//bool erra[2000001] = { false, };
+	//bool erra[201];
+	for (int i = 1; i <= 2000000; i++) {
+		erra[i] = false;
+	}
+	
+	for (int i = 2; i <= 2000000; i++) {
+		if (erra[i] == true)continue;
+
+		for (int j = i+i; j <= 2000000; j += i) {
+			erra[j] = true;
+		}
+	}
+
+	while (true) {
+
+		for (int i = n; i <= 2000000; i++) {
+			if (i == 1) continue;
+			if (erra[i] == false) {
+				bool func2_ret = func2(i);
+				if (func2_ret == true) {
+					cout << i;
+					return 0;
+				}
+			}
+		}
+
+	}
+	return 0;
+}
