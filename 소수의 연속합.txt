@@ -1,0 +1,41 @@
+#include<stdio.h>
+using namespace std;
+int n;
+bool err[4000002] = { false, };
+int sosu[4000002];
+int main() {
+	scanf("%d", &n);
+	for (int i = 2; i <= 4000000; i++) {
+		if (err[i] == false) {
+
+			for (int j = i * 2; j <= 4000000; j += i) {
+				if (err[j] == false)
+					err[j] = true;
+			}
+		}
+
+	}
+
+	int inx = 0;
+	int cnt = 0;
+	for (int i = 2; i <= 4000000; i++) {
+		if (err[i] == false)
+			sosu[inx++] = i;
+	}
+	long long int sum = 0;
+	int tail = 0, head=0;
+	while (tail<=head && head<inx) {
+		if (sum < n) {
+			sum += sosu[head++];
+		}
+		else if (sum > n) {
+			sum -= sosu[tail++];
+		}
+		else {
+			cnt++;
+			sum += sosu[head++];
+		}
+	}
+ 	printf("%d", cnt);
+	return 0;
+}
