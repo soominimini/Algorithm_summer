@@ -1,0 +1,125 @@
+#include<stdio.h>
+#include<queue>
+using namespace std;
+
+int row, col, time;
+const int dx[] = { 0,0,-1,+1 };
+const int dy[] = { -1,+1, 0,0 };
+int map[50][50];
+
+struct DUST {
+	int x, y;
+	int dustAmount;
+};
+
+void dustSpread() {
+	int updated[50][50];
+	queue<DUST> dust_q;
+	for (int y = 0; y < row; y++) {
+		for (int x = 0; x < col; x++) {
+			updated[y][x] = map[y][x];
+			if (updated[y][x] != -1 && updated[y][x] != 0) {
+				DUST dust;
+				dust.y = y;
+				dust.x = x;
+				dust.dustAmount = updated[y][x];
+				dust_q.push(dust);
+			}
+		}
+	}
+	int newarr[50][50] = {0,};
+	//현재 상태 카피와 dust 큐 완성
+	while (!dust_q.empty()) {
+		int cy = dust_q.front().y;
+		int cx = dust_q.front().x;
+		int dust_mount = dust_q.front().dustAmount;
+		int divided = dust_q.front().dustAmount /5;
+		int cnt = 0;
+		dust_q.pop();
+		for (int i = 0; i < 4; i++) {
+			int ny = cy + dy[i];
+			int nx = cx + dx[i];
+
+			if ( ny < 0 || nx<0 || nx >= col || ny >= row) continue;
+			else if (updated[ny][nx] == -1) continue;
+
+			newarr[ny][nx] += divided;
+			cnt++;
+		}
+		newarr[cy][cx] += dust_mount - (cnt*divided);
+
+	}
+	for (int y = 0; y < row; y++) {
+		for (int x = 0; x < col; x++) {
+			map[y][x] = newarr[y][x];
+			if (updated[y][x] == -1) map[y][x] = -1;
+			
+		}
+	}
+
+	return;
+
+}
+
+int main() {
+	int firstx, firsty;
+	int secondx, secondy;
+	bool flag = false;
+
+	scanf("%d %d %d", &row, &col, &time);
+	for (int y = 0; y < row; y++) {
+		for (int x = 0; x < col; x++) {
+			scanf("%d", &map[y][x]);
+			if (map[y][x] == -1 && flag ==false) {
+					firstx = x;
+					firsty = y;
+					flag = true;
+			}
+			else if (map[y][x] == -1 && flag == true) {
+				secondx = x;
+				secondy = y;
+			}
+		}
+	}
+	while (time>0) {
+		dustSpread();
+		//먼저 미세먼지가 확산되고
+		for (int m = firsty - 1; m > 0; m--)
+			map[m][0] = map[m - 1][0];
+
+		for (int k = 0; k < col; k++)
+			map[0][k] = map[0][k + 1];
+
+		for (int j = 0; j < firsty; j++)
+			map[j][col - 1] = map[j + 1][col - 1];
+
+		for (int i = col - 1; i > 1; i--)
+			map[firsty][i] = map[firsty][i - 1];
+		map[firsty][firstx + 1] = 0;
+		//첫번째 공기 청정기 코드 끝
+
+		for (int m = secondy +1; m < row; m++)
+			map[m][0] = map[m + 1][0];
+
+		for (int k = 0; k < col; k++)
+			map[row - 1][k] = map[row - 1][k + 1];
+
+		for (int j = row - 1; j > secondy; j--)
+			map[j][col - 1] = map[j - 1][col - 1];
+
+		for (int i = col - 1; i > 1; i--)
+			map[secondy][i] = map[secondy][i - 1];
+		map[secondy][secondx + 1] = 0;
+
+
+		time--;
+	}
+	int ret = 0;
+	for (int y = 0; y < row; y++) {
+		for (int x = 0; x < col; x++) {
+			if (map[y][x] != -1) ret += map[y][x];
+		}
+	}
+	printf("%d", ret);
+	return 0;
+}
