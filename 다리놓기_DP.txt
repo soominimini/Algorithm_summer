@@ -1,0 +1,37 @@
+#include<stdio.h>
+using namespace std;
+
+long long int dp[1001][1001] = { 0, };
+
+
+
+long long int func(int n, int k) {
+	dp[0][0] = 1;
+
+	for (int i = 1; i < 50 ; i++) {
+		for (int j = 0; j < 50; j++) {
+			if (j == 0) dp[i][j] = 1;
+			else if (i == j) dp[i][j] = 1;
+			else dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
+		}
+	}
+	int ret = dp[n][k];
+	return ret;
+}
+int main() {
+	int T;
+	scanf("%d", &T);
+	for (int i = 0; i < T; i++) {
+		int n, k;
+		scanf("%d %d", &n, &k);
+
+		if (k > n) {
+			int tmp = n;
+			n = k;
+			k = tmp;
+		}
+		long long int ret = func(n, k);
+		printf("%lld\n", ret);
+	}
+	return 0;
+}
