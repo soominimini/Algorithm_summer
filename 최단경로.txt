@@ -1,0 +1,64 @@
+#include<stdio.h>
+#include<queue>
+#include<vector>
+#include<iostream>
+#define INF 1000000
+#define MAX_SIZE 20002
+using namespace std;
+struct INFO {
+	int cost; int v;
+};
+
+INFO inf;
+int v, e;
+bool visited[MAX_SIZE] = {false,};
+int start;
+int dist[MAX_SIZE];
+vector<pair<int, int> >graph[MAX_SIZE];
+//priority_queue<INFO>pq;
+priority_queue<pair<int, int> >pq;
+
+void path() {
+	for (int i = 0; i < v+1; i++) {
+		dist[i] = INF;
+	}
+	dist[start] = 0;
+	visited[start] = true;
+	//INF로 채우고 첫번째만 0으로 초기화
+	//첫번째 v 푸쉬
+	pq.push({0, start});
+
+	while (!pq.empty()) {
+		int h_cost = -pq.top().first;
+		int h_v = pq.top().second;
+		visited[h_v] = true;
+		pq.pop();
+		if (dist[h_v] < h_cost)continue;
+
+		for (int i = 0; i < graph[h_v].size(); i++) {
+			int next = graph[h_v][i].second;
+			int n_cost = graph[h_v][i].first+ h_cost;
+
+			if (dist[next] > n_cost &&visited[next]==false) {
+				dist[next] = n_cost;
+				pq.push({ -n_cost, next });
+			}
+		}
+	}
+	return;
+}
+
+int main() {
+	scanf("%d %d\n%d", &v, &e, &start);
+	for (int i = 0; i < e; i++) {
+		int a, b, c;
+		scanf("%d %d %d", &a, &b, &c);
+		graph[a].push_back({ c,b });
+	}
+	path();
+	for (int i = 1; i < v+1; i++) {
+		if (dist[i] == INF)printf("INF\n");
+		else printf("%d\n", dist[i]);
+	}
+	return 0;
+}
