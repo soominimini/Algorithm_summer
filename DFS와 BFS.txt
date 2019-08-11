@@ -1,0 +1,62 @@
+#include<stdio.h>
+#include<queue>
+
+using namespace std;
+
+int link[1001][1001];
+bool visited[1001] = {false,};
+int n, m, start;
+int dfs_arr[1001];
+
+void DFS(int inx, int vertex) {
+	dfs_arr[inx] = vertex;
+	visited[vertex] = true;
+	printf("%d ", dfs_arr[inx]);
+	inx++;
+
+		for (int i = 1; i <= n; i++) {
+			if (link[vertex][i] == 1 && visited[i] == false) {
+				DFS(inx, i);
+			}
+		}
+
+	
+	return;
+}
+
+void BFS() {
+	queue<int>q;
+	q.push(start);
+	visited[start] = true;
+	while (!q.empty()) {
+		int vertex = q.front();
+		printf("%d ", vertex);
+		q.pop();
+
+		for (int i = 1; i <= n; i++ ) {
+			if (link[vertex][i] == 1 && visited[i] == false) {
+				q.push(i);
+				visited[i] = true;
+			}
+		}
+	}
+
+	return;
+}
+int main() {
+
+	scanf("%d %d %d", &n, &m, &start);
+	for (int i = 0; i < m; i++) {
+		int vertex1, vertex2;
+		scanf("%d %d", &vertex1, &vertex2);
+		link[vertex1][vertex2] = 1;
+		link[vertex2][vertex1] = 1;
+	}
+	DFS(0, start);
+	for (int i = 0; i <= n; i++)
+		visited[i] = false;
+	printf("\n");
+	BFS();
+
+	return 0;
+}
