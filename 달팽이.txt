@@ -1,0 +1,41 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+int main() {
+	int n, location;
+	scanf("%d %d", &n, &location);
+	int max = n;
+	int ** map = (int **)malloc(sizeof(int*)*n); //row 먼저 잡고 
+	for (int i = 0; i < n; i++) { // row당 col 만듦
+		map[i] = (int*)malloc(sizeof(int)*n);
+	}
+	int d = 1;
+	int x = 0, y = -1;
+	int inx = n * n;
+	while (n >= 0) {
+		for (int i = 0; i < n; i++) {
+			y = y + (1*d);
+			map[y][x] = inx--;
+		}
+		--n;
+		for (int i = 0; i < n; i++) {
+			x = x + (1*d);
+			map[y][x] = inx--;
+		}
+		d = d * -1;
+
+	}
+	int row=0, col = 0;
+	for (int i = 0; i < max; i++) {
+		for (int j = 0; j < max; j++) {
+			if (map[i][j] == location) {
+				row = i + 1;
+				col = j + 1;
+			}
+			printf("%d ", map[i][j]);
+		}
+		printf("\n");
+	}
+	printf("%d %d", row, col);
+	return 0;
+}
