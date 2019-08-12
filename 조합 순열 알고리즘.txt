@@ -1,0 +1,78 @@
+#include<stdio.h>
+using namespace std;
+
+int selc[10];
+int arr[10];
+
+void johab_same(int cnt ) {
+	if (cnt == 4) {
+		for (int i = 0; i < 4; i++) {
+			printf("%d ", selc[i]);
+		}
+		printf("\n");
+	}
+	else {
+		for (int i = 0; i < 4; i++) {
+			selc[cnt] = arr[i];
+			johab_same(cnt + 1);
+		}
+	}
+	return;
+}
+
+void johab(int cnt, int inx) {
+	if (cnt == 2) {
+		for(int i=0; i<2; i++)
+		printf("%d ", selc[i]);
+		printf("\n");
+	}
+	else {
+		for (int i = inx; i < 10; i++) {
+
+			selc[cnt] = arr[i];
+			johab(cnt+1, i+1);
+
+		}
+	}
+}
+
+bool visited[10] = { false, };
+void dfs_permu(int cnt) {
+	//4개의 순열을 구할것
+	if (cnt == 4 ) {
+		for (int i = 0; i < 4; i++) {
+			printf("%d ", selc[i]);
+		}
+		printf("\n");
+	}
+	else {
+		for (int i = 0; i < 4; i++) {
+			if (visited[i] == true) continue;
+			selc[cnt] = arr[i];
+			visited[i] = true;
+			dfs_permu(cnt + 1);
+			visited[i] = false;
+		}
+	}
+
+}
+int main() {
+	for (int i = 0; i < 10; i++) {
+		arr[i] = i + 1;
+	}
+	johab_same(0);//  1121 이나 2111이나 동일 하지만 그냥 중복 해서 모든 조합의 수를 뽑아 낼 때
+	//일반조합은 k가 작고 주어진게 겁나 클 때 
+	for (int i = 0; i < 10; i++)
+		selc[i] = 0;
+
+	printf("----------------------조합---------------\n");
+	johab(0,0);
+
+	//dfs로 순열 구하기
+	//순열 알고리즘을 문제에서 사용할 떄는 주로 제한된 숫자 범위가 주어지고 그 숫자들을 한번에 모두 활용해야할때
+	for (int i = 0; i < 10; i++)
+		selc[i] = 0;
+	printf("----------------------dfs_순열---------------\n");
+	dfs_permu(0);
+	return 0;
+}
