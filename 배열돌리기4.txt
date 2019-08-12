@@ -1,0 +1,109 @@
+#include<stdio.h>
+#include<algorithm>
+#define INF 1e9
+using namespace std;
+
+struct INFO {
+	int r, c, s;
+};
+int n, m, k;
+int map[51][51];
+INFO arr[10];
+int r, c, s;
+int permu[10];
+
+int sum() {
+	int sum_ret = INF;
+	for (int i = 0; i < n; i++) {
+		int sum_tmp = 0;
+		for (int j = 0; j < m; j++) {
+			sum_tmp += map[i][j];
+		}
+		sum_ret = min(sum_ret, sum_tmp);
+	}
+	return sum_ret;
+}
+
+void func2(int cur_inx) {
+	int copy[51][51];
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			copy[i][j] = map[i][j];
+		}
+	}
+	//실제 배열 돌리는 함수
+	int d = 1;
+	int sy = arr[cur_inx].r - arr[cur_inx].s - 1;//처음 시작은 -1로
+	int sx = arr[cur_inx].c - arr[cur_inx].s - 2;
+	int max_len = abs((arr[cur_inx].r - arr[cur_inx].s) - (arr[cur_inx].r + arr[cur_inx].s ))+1;
+	int cnt = 0;
+
+	while (1 < max_len) {
+		for (int i = 0; i < max_len; i++) {
+			if (cnt % 4 == 0 && i == 0) {
+				sx = sx + d;
+				map[sy][sx] = copy[sy + 1][sx];
+			}
+			else {
+				sx = sx + d;
+				map[sy][sx] = copy[sy][sx - d];
+			}
+		}
+		cnt++;
+		max_len--;
+		for (int i = 0; i < max_len; i++) {
+
+			sy = sy + d;
+			map[sy][sx] = copy[sy - d][sx];
+
+		}
+
+		d *= -1; //방향전환
+		cnt++;
+	}
+
+	return;
+}
+
+int func() {
+	for (int i = 0; i < k; i++) {
+		func2(permu[i]);
+	}
+	int sum_min = sum();
+	return sum_min;
+}
+
+int main() {
+	int init_map[51][51];
+	scanf("%d %d %d", &n, &m, &k);
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			scanf("%d", &map[i][j]);
+			init_map[i][j] = map[i][j];
+		}
+	}
+
+	for (int i = 0; i < k; i++)
+		scanf("%d %d %d", &arr[i].r, &arr[i].c, &arr[i].s);
+	for (int i = 0; i < k; i++)
+		permu[i] = i;
+
+	int ret = INF;
+
+	do {
+		int func_min = func();
+		ret = min(ret, func_min);
+
+		//맵 초기화
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				map[i][j] = init_map[i][j];
+			}
+		}
+	} while (next_permutation(permu, permu+k));
+
+
+	printf("%d", ret);
+	return 0;
+}
