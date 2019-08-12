@@ -1,0 +1,68 @@
+#include<stdio.h>
+#include<algorithm>
+using namespace std;
+
+struct INFO {
+	int a, b;
+	int v;
+};
+int n, m;
+
+INFO arr[100001];
+int parent[1002];
+
+bool comp(const INFO &a, const INFO &b) {
+	if (a.v < b.v) return true;
+	else return false;
+}
+
+int FIND(int a) {
+	if (a == parent[a]) return a;
+	else {
+		
+		return  FIND(parent[a]);
+	}
+}
+void UNION(int a, int b) {
+	a = FIND(a);
+	b = FIND(b);
+	if (a<b) {
+		parent[b] = a;
+		return;
+	}
+	else {
+		parent[a] = b;
+		return;
+	}
+}
+
+int main() {
+	scanf("%d\n%d", &n, &m);
+	INFO inf;
+
+	for (int i = 0; i < m; i++) {
+		int a, b, c;
+		scanf("%d %d %d", &a, &b, &c);
+		inf.a = a;
+		inf.b = b;
+		inf.v = c;
+		arr[i] = inf;
+	}
+
+	stable_sort(arr, arr + m, comp);
+	int ret = 0;
+
+	for (int i = 1; i <= n; i++)
+		parent[i] = i;
+
+	for (int i = 0; i < m; i++) {
+		int c1 = FIND(arr[i].a);
+		int c2= FIND(arr[i].b);
+		if (c1 != c2) {
+			ret += arr[i].v;
+			UNION(arr[i].a, arr[i].b);
+		}
+	}
+	printf("%d", ret);
+	return 0;
+}
