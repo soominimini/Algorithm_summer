@@ -1,4 +1,4 @@
-/*
+
 #include<stdio.h>
 #include<iostream>
 #include<queue>
@@ -83,4 +83,3 @@ int main() {
 	printf("%d %d\n", ret_sheep, ret_wolf);
 	return 0;
 }
-*/
