@@ -1,3 +1,4 @@
+/*
 #include<stdio.h>
 #include<algorithm>
 using namespace std;
@@ -103,3 +104,4 @@ int main() {
 	printf("%d\n", max_socre);
 	return 0;
 }
+*/
