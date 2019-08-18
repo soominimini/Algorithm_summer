@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="leetCode_twoSum.cpp" />
     <ClCompile Include="보물상자.cpp" />
     <ClCompile Include="양.cpp" />
     <ClCompile Include="오픈채팅방.cpp" />
