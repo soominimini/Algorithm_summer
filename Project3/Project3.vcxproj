@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -139,10 +139,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="2048.cpp" />
+    <ClCompile Include="leetcode_addTwoNumbers.cpp" />
     <ClCompile Include="leetCode_twoSum.cpp" />
     <ClCompile Include="보물상자.cpp" />
+    <ClCompile Include="비숍.cpp" />
+    <ClCompile Include="시간줄이기.cpp" />
+    <ClCompile Include="실패율.cpp" />
     <ClCompile Include="양.cpp" />
     <ClCompile Include="오픈채팅방.cpp" />
+    <ClCompile Include="투포인터.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
