@@ -1,3 +1,4 @@
+/*
 #include <string>
 #include<unordered_map>
 #include <vector>
@@ -61,15 +62,12 @@ vector<string> solution(vector<string> record) {
 }
 
 int main() {
-	/*
 	vector<string>record;
 	record.push_back("Enter uid12345 Muzi");
 	record.push_back("Leave uid12345");
-	record.push_back("Change uid12345 Ryan");
-	
-	solution(record);
-	*/ 
+
 	//메인 함수는 test 용
 	
 	return 0;
 }
+*/
