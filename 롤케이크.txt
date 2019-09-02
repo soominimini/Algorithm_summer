@@ -1,0 +1,52 @@
+
+#include<stdio.h>
+using namespace std;
+
+int L;
+int people_n;
+
+int cake[1001];
+int people[1001];
+
+int  main() {
+	int p, k;
+	int expect_number = 0, expect_person = 0;
+
+	scanf("%d", &L);
+	scanf("%d", &people_n);
+	for (int i = 1; i <= people_n; i++) {
+		scanf("%d %d", &p, &k);
+		p -= 1; k -= 1;
+		if ((k - p + 1) > expect_number) {
+			expect_number = k-p + 1;
+			expect_person = i;
+		}
+		else if ((k - p + 1) == expect_number) {
+			if (expect_person > i) expect_person = i;
+		}
+		for (int j = p; j <= k; j++) {
+			if (cake[j] != 0)continue;
+			
+			cake[j] = i;
+		}
+	}
+
+	int real_number = 0, real_person = 0;
+	for (int i = 0; i < L; i++) {
+		if (cake[i] != 0) {
+			int person_num = cake[i];
+			people[person_num] += 1;
+			if (real_number < people[person_num]) {
+				real_number = people[person_num];
+				real_person = person_num;
+			}
+			else if (real_number == people[person_num]) {
+				if (real_person > person_num) {
+					real_person = person_num;
+				}
+			}
+		}
+	}
+	printf("%d\n%d", expect_person, real_person);
+	return 0;
+}
