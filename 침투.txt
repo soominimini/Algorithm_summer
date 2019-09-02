@@ -1,0 +1,71 @@
+
+#include<stdio.h>
+#include<queue>
+#include<iostream>
+#include<string>
+using namespace std;
+
+int n, m;
+int dx[] = { -1, 0, +1, 0 };
+int dy[] = { 0, -1, 0, +1 };
+int map[1001][1001];
+bool visited[1001][1001] = { false, };
+queue<int>q;
+
+bool bfs() {
+	while (!q.empty()) {
+		int x = q.front() % 10000;
+		int y = q.front() / 10000;
+		q.pop();
+
+		int ny, nx;
+		for (int i = 0; i < 4; i++) {
+			ny = y + dy[i];
+			nx = x + dx[i];
+			if (ny < 0 || nx < 0 || ny >= n || nx >= m)continue;
+			else if (visited[ny][nx] == false)continue;
+
+			visited[ny][nx] = false;
+			q.push(ny * 10000 + nx);
+		}
+	}
+	bool flag_ret = false;
+	for (int i = 0; i < m; i++) {
+		if (visited[n - 1][i] == false && map[n-1][i]==0) {
+			flag_ret = true;//하나라도 전해진 곳이 있다면
+			break;
+		}
+	}
+	if (flag_ret == true)return true;
+	else return false;
+}
+
+int main() {
+	scanf("%d %d", &n, &m);
+	bool flag = false;
+	string s;
+	for (int i = 0; i < n; i++) {
+		cin >> s;
+		for (int j = 0; j < s.length(); j++) {
+			map[i][j] = s.at(j) -'0';
+			if (map[i][j] == 0) {
+				visited[i][j] = true;
+				flag = true;
+			}
+		}
+	}
+	if (flag == false) {
+		printf("NO\n");
+		return 0;
+	}
+	for (int i = 0; i < m; i++) {
+		if (map[0][i] == 0) {
+			q.push(i);
+			visited[0][i] = false;
+		}
+	}
+	bool ret =bfs();
+	if (ret == false)printf("NO\n");
+	else printf("YES\n");
+	return 0;
+}
