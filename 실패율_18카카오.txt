@@ -1,0 +1,68 @@
+
+#include<stdio.h>
+#include <string>
+#include<algorithm>
+#include <vector>
+using namespace std;
+
+struct INFO {
+	double ratio;
+	int inx;
+};
+
+bool comp(const INFO & a, const INFO &b) {
+	if (a.ratio > b.ratio)return true;
+	// 둘 중 앞에 있는 변수를 기준으로 정렬
+	//따라서 a.ratio> b.ratio는 큰값을 기준으로 정렬이고
+	else if (a.ratio == b.ratio) {
+		if (a.inx < b.inx)return true;
+	}
+	return false;
+}
+
+vector<int> solution(int N, vector<int> stages) {
+
+	vector<int> answer;
+	int stage_info[502] = {0,};
+	INFO failure[502];
+
+	for (int i = 0; i < stages.size(); i++) {
+		stages.at(i) -= 1;
+	}// 1 0 1 5 1 3 2 
+
+	for (int i = 0; i < stages.size(); i++) {
+		stage_info[stages.at(i)] += 1;
+	} //1 3 2 1 0 1
+
+	for (int i = 0; i < N; i++) {
+		// 소수점을 계산하고 싶으면 계산값을 받는 변수 뿐만 아니라 
+		//분자와 분모 모두 타입을 double로 지정해 주어야함
+		double bunja = stage_info[i];
+		double  bunmo=0;
+		for (int j = i + 1; j <= N; j++) {
+			bunmo += stage_info[j];
+		}
+		if (bunja == 0 || bunmo+bunja == 0) {
+			failure[i].ratio = 0;
+			failure[i].inx = i;
+		}
+		else {
+			failure[i].ratio =  bunja / (bunja + bunmo);
+			failure[i].inx = i;
+		}
+	}// 1/8 3/7 2/4 1/2 0
+
+	sort(failure, failure + N, comp);
+	//실패율에 따라 소팅
+	for (int i = 0; i < N; i++) {
+		answer.push_back( failure[i].inx + 1);
+	}// 3 4 2 1 5 
+
+	return answer;
+}
+int main() {
+	vector<int> stages = { 4,4,4,4,4 };
+	solution(4, stages);
+	return 0;
+}
+
